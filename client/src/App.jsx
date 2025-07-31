@@ -48,6 +48,14 @@ export default function App() {
 
             {/* Protected routes */}
             <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <CheckoutPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
               path="/checkout/:bookingId"
               element={
                 <ProtectedRoute>
