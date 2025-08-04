@@ -215,11 +215,39 @@ export default function EventDetailsPage() {
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg md:w-64">
-              <div className="text-xl font-bold text-gray-900 mb-2">
-                ₹
-                {event.price && !isNaN(event.price)
-                  ? parseFloat(event.price).toFixed(2)
-                  : "N/A"}
+              <div className="space-y-3 mb-4">
+                <div className="text-lg font-bold text-gray-900">
+                  Seat Pricing:
+                </div>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-green-600">Regular:</span>
+                    <span className="font-medium">
+                      ₹
+                      {event.price && !isNaN(event.price)
+                        ? parseFloat(event.price).toFixed(2)
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-purple-600">VIP:</span>
+                    <span className="font-medium">
+                      ₹
+                      {event.price && !isNaN(event.price)
+                        ? (parseFloat(event.price) * 1.5).toFixed(2)
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-amber-600">Premium:</span>
+                    <span className="font-medium">
+                      ₹
+                      {event.price && !isNaN(event.price)
+                        ? (parseFloat(event.price) * 2).toFixed(2)
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
               </div>
 
               <div className="text-sm text-gray-600 mb-4">

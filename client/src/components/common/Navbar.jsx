@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = ({ user, onLogout }) => {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,12 +20,19 @@ const Navbar = ({ user, onLogout }) => {
     <nav className="bg-[rgba(8,12,25,1)] shadow-xl">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-2">
-          {/* Left: Logo only (rectangle image) */}
+          {/* Logo with error handling */}
           <Link to="/" className="flex items-center">
             <img
-              src="EvenzaLogo4crop.png"
-              alt="Logo"
+              src="/EvenzaLogo4crop.png" // Add leading slash for absolute path from public directory
+              alt="Evenza"
               className="w-30 h-12 transition duration-300"
+              onError={(e) => {
+                if (!logoError) {
+                  // Try alternate path if first one fails
+                  e.target.src = "EvenzaLogo4crop.png";
+                  setLogoError(true);
+                }
+              }}
             />
           </Link>
 

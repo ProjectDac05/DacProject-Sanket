@@ -288,16 +288,18 @@ class CreatorController {
 
       // Get upcoming events
       const [upcomingEvents] = await db.query(
-        `SELECT e.*, 
-          COUNT(DISTINCT b.booking_id) as booking_count,
-          COUNT(DISTINCT w.wishlist_id) as wishlist_count
-         FROM events e
-         LEFT JOIN bookings b ON e.event_id = b.event_id AND b.status = 'confirmed'
-         LEFT JOIN wishlists w ON e.event_id = w.event_id
-         WHERE e.organizer_id = ? AND e.date >= CURDATE()
-         GROUP BY e.event_id
-         ORDER BY e.date ASC
-         LIMIT 5`,
+        `SELECT 
+          e.*,
+          (SELECT COUNT(*) FROM bookings b 
+           JOIN booked_seats bs ON b.booking_id = bs.booking_id 
+           WHERE b.event_id = e.event_id AND b.status = 'confirmed') as booked_seats,
+          (SELECT COUNT(DISTINCT b.booking_id) FROM bookings b 
+           WHERE b.event_id = e.event_id AND b.status = 'confirmed') as confirmed_bookings
+        FROM events e
+        WHERE e.organizer_id = ? 
+        AND e.date >= CURDATE()
+        ORDER BY e.date ASC
+        LIMIT 5`,
         [req.user.user_id]
       );
 

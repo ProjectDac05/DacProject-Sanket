@@ -64,6 +64,16 @@ class AuthController {
         password: "[REDACTED]",
       });
 
+      // Block login for deactivated users
+      if (user && user.is_active === false) {
+        return next(
+          new AppError(
+            "Your account is deactivated. Please contact support.",
+            403
+          )
+        );
+      }
+
       if (!user || !(await User.comparePassword(password, user.password))) {
         // Increment failed login attempts
         await User.incrementFailedLoginAttempts(email);
@@ -165,6 +175,16 @@ class AuthController {
       const user = await User.findById(decoded.id);
       if (!user) {
         return next(new AppError("User not found", 404));
+      }
+
+      // Block refresh for deactivated users
+      if (user.is_active === false) {
+        return next(
+          new AppError(
+            "Your account is deactivated. Please contact support.",
+            403
+          )
+        );
       }
 
       // Generate new access token

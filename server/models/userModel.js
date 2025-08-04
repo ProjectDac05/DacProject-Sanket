@@ -10,6 +10,9 @@ class User {
       "SELECT user_id, name, email, password, phone, role, is_active, failed_login_attempts, lockout_time FROM users WHERE email = ?",
       [email]
     );
+    if (rows[0]) {
+      rows[0].is_active = !!rows[0].is_active;
+    }
     return rows[0];
   }
 
@@ -18,6 +21,9 @@ class User {
       "SELECT user_id, name, email, password, phone, role, is_active, failed_login_attempts, lockout_time FROM users WHERE user_id = ?",
       [id]
     );
+    if (rows[0]) {
+      rows[0].is_active = !!rows[0].is_active;
+    }
     return rows[0];
   }
 
